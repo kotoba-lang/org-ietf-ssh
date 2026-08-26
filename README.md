@@ -74,6 +74,25 @@ parses it, pulls the host public key out of `K_S`, re-derives the shared secret
 and `H` from the wire, and verifies the signature over `H`. If a different
 implementation accepts the reply, a real `ssh(1)` will.
 
+`src/ssh/keys.cljc` — the post-NEWKEYS key derivation (RFC 4253 §7.2):
+`session-keys` returns the four `aes128-gcm@openssh.com` parameters (per-direction
+key + IV) from `K`, `H`, and the session id.
+
+`src/ssh/record.cljc` — the `aes128-gcm@openssh.com` binary packet layer (RFC
+5647 + OpenSSH): `seal` / `open` with the length field as GCM AAD, the 12-byte
+nonce whose 8-byte counter increments byte-wise per packet, and the block/padding
+rule. The GCM cipher is caller-supplied.
+
+`src/ssh/userauth.cljc` — the `publickey` authentication exchange (RFC 4252 §7):
+the service request/accept, the USERAUTH_REQUEST, and `signed-data` — the exact
+bytes the client signs and the server reconstructs to verify.
+
+`test/ssh/session_test.cljs` runs the **whole post-NEWKEYS login end to end with
+real crypto** (Node AES-128-GCM + ECDSA): derive keys, encrypted service
+request/accept, and publickey userauth where the server reconstructs `signed-data`
+and verifies the client's signature against the authorized key — and refuses a
+signature from a non-authorized key. 13/13.
+
 ## Test
 
 `test/ssh/transport_test.cljs` drives the core with fixed inputs and checks the
