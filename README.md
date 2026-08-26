@@ -93,6 +93,14 @@ request/accept, and publickey userauth where the server reconstructs `signed-dat
 and verifies the client's signature against the authorized key — and refuses a
 signature from a non-authorized key. 13/13.
 
+`src/ssh/connection.cljc` — the connection protocol (RFC 4254): opening a
+`session` channel and running a command. `channel-open` / `-confirmation`,
+`channel-request-exec`, `channel-success`, `channel-data`, `exit-status`,
+`channel-eof` / `-close`, and parsers the server admits the client's messages
+with. `test/ssh/session_channel_test.cljs` runs a full session over the encrypted
+record layer — the client opens a channel, runs `exec`, and receives the server's
+`CHANNEL_DATA` output. 9/9.
+
 ## Test
 
 `test/ssh/transport_test.cljs` drives the core with fixed inputs and checks the
