@@ -59,6 +59,21 @@ Clojure and ClojureScript/SCI without a platform byte-array type.
 | `kexinit-payload` | RFC 4253 §7.1 SSH_MSG_KEXINIT payload |
 | `h-transcript` / `exchange-hash` | **the exchange-hash transcript and `H = sha256(transcript)`** |
 
+`src/ssh/kex.cljc` — the server side of the reply:
+
+| | |
+|---|---|
+| `ec-point` / `host-key-blob` | the `ecdsa-sha2-nistp256` host key blob `K_S` (algo, curve, SEC1 point) |
+| `signature-blob` | `string algo || string (mpint r \|\| mpint s)` |
+| `kex-ecdh-reply-payload` / `newkeys-payload` | the `SSH_MSG_KEX_ECDH_REPLY` and `SSH_MSG_NEWKEYS` payloads |
+| `ecdsa-digest` | the ECDSA message digest for `ecdsa-sha2-nistp256`: `SHA256(H)` |
+
+`test/ssh/kex_test.cljs` runs a full round-trip with **real crypto on both sides**
+(Node X25519 + ECDSA P-256): the server builds the reply, an independent client
+parses it, pulls the host public key out of `K_S`, re-derives the shared secret
+and `H` from the wire, and verifies the signature over `H`. If a different
+implementation accepts the reply, a real `ssh(1)` will.
+
 ## Test
 
 `test/ssh/transport_test.cljs` drives the core with fixed inputs and checks the
