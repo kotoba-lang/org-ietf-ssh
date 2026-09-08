@@ -14,7 +14,7 @@
 
   Bytes are plain vectors of 0..255 integers so the code runs identically under
   Clojure and nbb/SCI without a platform byte-array type."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── message numbers (RFC 4253 §12, RFC 5656 §7.1) ───────────────────────────
 (def msg-disconnect 1)
