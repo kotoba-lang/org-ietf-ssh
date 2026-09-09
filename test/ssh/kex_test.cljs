@@ -10,7 +10,7 @@
 
 (require '[ssh.transport :as t]
          '[ssh.kex :as kex]
-         '[clojure.string :as str])
+         '[kotoba.lang.text :as str])
 
 (def crypto (js/require "node:crypto"))
 (def results (atom []))

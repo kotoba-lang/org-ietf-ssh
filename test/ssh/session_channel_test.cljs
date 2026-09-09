@@ -6,7 +6,7 @@
 ;; what the aiueos kernel does after USERAUTH_SUCCESS.
 
 (require '[ssh.keys :as keys] '[ssh.record :as rec] '[ssh.connection :as con]
-         '[clojure.string :as str])
+         '[kotoba.lang.text :as str])
 
 (def crypto (js/require "node:crypto"))
 (def results (atom []))

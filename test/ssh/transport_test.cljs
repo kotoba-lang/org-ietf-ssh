@@ -11,7 +11,7 @@
 ;; input here is fixed.
 
 (require '[ssh.transport :as t]
-         '[clojure.string :as str])
+         '[kotoba.lang.text :as str])
 
 (def crypto (js/require "node:crypto"))
 (def results (atom []))
