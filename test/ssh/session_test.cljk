@@ -1,4 +1,4 @@
-#!/usr/bin/env nbb
+#!/usr/bin/env kbb
 ;; The whole post-NEWKEYS layer, end to end, with REAL crypto (Node AES-128-GCM
 ;; and ECDSA P-256): derive the session keys from (K, H), then run the encrypted
 ;; service request/accept and the publickey userauth exchange, with the server

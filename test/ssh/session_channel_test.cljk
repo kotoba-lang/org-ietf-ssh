@@ -1,4 +1,4 @@
-#!/usr/bin/env nbb
+#!/usr/bin/env kbb
 ;; The connection protocol end to end over the encrypted record layer with REAL
 ;; AES-128-GCM: the client opens a `session` channel, runs an `exec` command, and
 ;; receives the server's CHANNEL_DATA output -- the last step that turns an

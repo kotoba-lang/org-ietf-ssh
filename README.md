@@ -110,7 +110,7 @@ path. Every input is fixed — a parity failure that only reproduces sometimes i
 not reportable.
 
 ```bash
-nbb --classpath src:test test/ssh/transport_test.cljk
+kbb --backend sci --classpath src:test test/ssh/transport_test.cljk
 # SSH_TRANSPORT_SUMMARY ran=13 expected=13 failed=0
 ```
 

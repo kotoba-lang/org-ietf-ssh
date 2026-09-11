@@ -1,4 +1,4 @@
-#!/usr/bin/env nbb
+#!/usr/bin/env kbb
 ;; ssh.kex end-to-end, with REAL crypto on both sides (Node's X25519 and ECDSA
 ;; P-256). The server side builds exactly what the aiueos kernel will build -- a
 ;; curve25519-sha256 KEX_ECDH_REPLY carrying K_S, Q_S, and an ecdsa-sha2-nistp256

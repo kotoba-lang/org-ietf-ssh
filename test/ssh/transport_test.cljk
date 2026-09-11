@@ -1,4 +1,4 @@
-#!/usr/bin/env nbb
+#!/usr/bin/env kbb
 ;; ssh.transport against an independent reference. The point of a transport
 ;; core that computes an exchange hash is that a DIFFERENT implementation,
 ;; given the same wire inputs, gets the same H -- otherwise the peer would not.
