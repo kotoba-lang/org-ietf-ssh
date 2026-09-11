@@ -48,7 +48,7 @@ Clojure and ClojureScript/SCI without a platform byte-array type.
 
 ## What's here
 
-`src/ssh/transport.cljc`:
+`src/ssh/transport.cljk`:
 
 | | |
 |---|---|
@@ -59,7 +59,7 @@ Clojure and ClojureScript/SCI without a platform byte-array type.
 | `kexinit-payload` | RFC 4253 §7.1 SSH_MSG_KEXINIT payload |
 | `h-transcript` / `exchange-hash` | **the exchange-hash transcript and `H = sha256(transcript)`** |
 
-`src/ssh/kex.cljc` — the server side of the reply:
+`src/ssh/kex.cljk` — the server side of the reply:
 
 | | |
 |---|---|
@@ -68,49 +68,49 @@ Clojure and ClojureScript/SCI without a platform byte-array type.
 | `kex-ecdh-reply-payload` / `newkeys-payload` | the `SSH_MSG_KEX_ECDH_REPLY` and `SSH_MSG_NEWKEYS` payloads |
 | `ecdsa-digest` | the ECDSA message digest for `ecdsa-sha2-nistp256`: `SHA256(H)` |
 
-`test/ssh/kex_test.cljs` runs a full round-trip with **real crypto on both sides**
+`test/ssh/kex_test.cljk` runs a full round-trip with **real crypto on both sides**
 (Node X25519 + ECDSA P-256): the server builds the reply, an independent client
 parses it, pulls the host public key out of `K_S`, re-derives the shared secret
 and `H` from the wire, and verifies the signature over `H`. If a different
 implementation accepts the reply, a real `ssh(1)` will.
 
-`src/ssh/keys.cljc` — the post-NEWKEYS key derivation (RFC 4253 §7.2):
+`src/ssh/keys.cljk` — the post-NEWKEYS key derivation (RFC 4253 §7.2):
 `session-keys` returns the four `aes128-gcm@openssh.com` parameters (per-direction
 key + IV) from `K`, `H`, and the session id.
 
-`src/ssh/record.cljc` — the `aes128-gcm@openssh.com` binary packet layer (RFC
+`src/ssh/record.cljk` — the `aes128-gcm@openssh.com` binary packet layer (RFC
 5647 + OpenSSH): `seal` / `open` with the length field as GCM AAD, the 12-byte
 nonce whose 8-byte counter increments byte-wise per packet, and the block/padding
 rule. The GCM cipher is caller-supplied.
 
-`src/ssh/userauth.cljc` — the `publickey` authentication exchange (RFC 4252 §7):
+`src/ssh/userauth.cljk` — the `publickey` authentication exchange (RFC 4252 §7):
 the service request/accept, the USERAUTH_REQUEST, and `signed-data` — the exact
 bytes the client signs and the server reconstructs to verify.
 
-`test/ssh/session_test.cljs` runs the **whole post-NEWKEYS login end to end with
+`test/ssh/session_test.cljk` runs the **whole post-NEWKEYS login end to end with
 real crypto** (Node AES-128-GCM + ECDSA): derive keys, encrypted service
 request/accept, and publickey userauth where the server reconstructs `signed-data`
 and verifies the client's signature against the authorized key — and refuses a
 signature from a non-authorized key. 13/13.
 
-`src/ssh/connection.cljc` — the connection protocol (RFC 4254): opening a
+`src/ssh/connection.cljk` — the connection protocol (RFC 4254): opening a
 `session` channel and running a command. `channel-open` / `-confirmation`,
 `channel-request-exec`, `channel-success`, `channel-data`, `exit-status`,
 `channel-eof` / `-close`, and parsers the server admits the client's messages
-with. `test/ssh/session_channel_test.cljs` runs a full session over the encrypted
+with. `test/ssh/session_channel_test.cljk` runs a full session over the encrypted
 record layer — the client opens a channel, runs `exec`, and receives the server's
 `CHANNEL_DATA` output. 9/9.
 
 ## Test
 
-`test/ssh/transport_test.cljs` drives the core with fixed inputs and checks the
+`test/ssh/transport_test.cljk` drives the core with fixed inputs and checks the
 encodings against hand-computed bytes and, crucially, `H` against an *independent*
 Node reference that concatenates the same RFC 5656 fields through a separate code
 path. Every input is fixed — a parity failure that only reproduces sometimes is
 not reportable.
 
 ```bash
-nbb --classpath src:test test/ssh/transport_test.cljs
+nbb --classpath src:test test/ssh/transport_test.cljk
 # SSH_TRANSPORT_SUMMARY ran=13 expected=13 failed=0
 ```
 
