@@ -4,7 +4,7 @@
 `curve25519-sha256` key exchange (RFC 8731 / RFC 5656) — the wire rules and, above
 all, the ordered transcript whose SHA-256 is the exchange hash `H`.**
 
-The name follows the origin-plane rule (CLAUDE.md, ADR-2608040100): SSH is
+The name follows the origin-plane rule (AGENTS.md, ADR-2608040100): SSH is
 specified by the IETF, so the reverse-DNS of the authority (`ietf.org` →
 `org-ietf`) plus the subject gives `org-ietf-ssh`.
 
